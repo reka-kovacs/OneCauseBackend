@@ -14,7 +14,7 @@ import (
 )
 
 const (
-	PORT = "4200"
+	PORT = "8080"
 )
 
 type JWTData struct {
@@ -47,7 +47,7 @@ func main() {
 	handler := cors.Default().Handler(mux)
 
 	log.Println("Listening for connections on port: ", PORT)
-	log.Fatal(http.ListenAndServe(":"+PORT, handler))
+	log.Fatal(http.ListenAndServe("localhost:8080", handler))
 }
 
 func LoginHandler(w http.ResponseWriter, r *http.Request) {
@@ -61,7 +61,7 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 	json.Unmarshal(body, &userData)
 
 	hours, minutes, _ := time.Now().Clock()
-	if userData["email"] == user.Username && userData["password"] == user.Password && userData["token"] == fmt.Sprintf("%02d%02d", hours, minutes) {
+	if userData["username"] == user.Username && userData["password"] == user.Password && userData["token"] == fmt.Sprintf("%02d%02d", hours, minutes) {
 		fmt.Print("valid")
 		json.NewEncoder(w).Encode(&user)
 	} else {
